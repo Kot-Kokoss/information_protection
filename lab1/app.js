@@ -32,12 +32,13 @@ while (pass_number != 0) {
   let encrypted_password;
 
   for (let i = 0; i != pass_lenth; i++) {
-    let pass_element = password[i],
-        pass_element_index = alphabet.indexOf(pass_element) + encrypted_step;
-    if (pass_element_index > 66) {
-      pass_element_index -= 67;
-    }
-    encrypted_password += alphabet[pass_element_index];
+    // let pass_element = password[i],
+    //     pass_element_index = alphabet.indexOf(pass_element) + encrypted_step;
+    // if (pass_element_index > 66) {
+    //   pass_element_index -= 67;
+    // }
+    // encrypted_password += alphabet[pass_element_index];
+    console.log(alphabet.indexOf(password[i]) + encrypted_step , ' ' , alphabet[alphabet.indexOf(password[i]) + encrypted_step]);
   }
 
   //write pass in txt-file
