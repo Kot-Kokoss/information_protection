@@ -9,7 +9,7 @@ const random = (min, max) => {
 
 const pass_lenth = readline.question("Enter the password length - ");
 let pass_number = readline.question("Enter the number of passwords - ");
-const encrypted_step = readline.question("Enter the encryption step - ");
+const encrypted_step = Number(readline.question("Enter the encryption step - "));
 const alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789%#-&$';
 
 fs.open('password_storage.txt', 'a', (err) => {
@@ -29,18 +29,17 @@ while (pass_number != 0) {
   };
 
   console.log(password);
-  let encrypted_password;
+  let encrypted_password = '';
 
   for (let i = 0; i != pass_lenth; i++) {
-    // let pass_element = password[i],
-    //     pass_element_index = alphabet.indexOf(pass_element) + encrypted_step;
-    // if (pass_element_index > 66) {
-    //   pass_element_index -= 67;
-    // }
-    // encrypted_password += alphabet[pass_element_index];
-    console.log(alphabet.indexOf(password[i]) + encrypted_step , ' ' , alphabet[alphabet.indexOf(password[i]) + encrypted_step]);
+    let pass_element = password[i],
+        pass_element_index = alphabet.indexOf(pass_element) + encrypted_step;
+    if (pass_element_index > 66) {
+      pass_element_index -= 67;
+    }
+    encrypted_password += alphabet[pass_element_index];
   }
-
+  
   //write pass in txt-file
   fs.appendFile('password_storage.txt', encrypted_password + '\n', (err) => {
     if(err) throw err;
