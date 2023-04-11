@@ -1,0 +1,15 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "node-js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ilya Zaostrovskiy",
+  "license": "ISC",
+  "dependencies": {
+    "Math": "^0.0.1-security",
+    "readline-sync": "^1.4.10"
+  }
+}
