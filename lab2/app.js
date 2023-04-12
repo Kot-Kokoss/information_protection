@@ -35,8 +35,8 @@ if (encr_or_decr == 2) {
         let text_element = text[i],
             text_element_index = text.indexOf(text_element) - encrypted_step;  
         
-        if (text_element_index < text.length - 1) {
-            text_element_index -= text.length;
+        if (text_element_index < 0) {
+            text_element_index = text.length - (encrypted_step - Math.abs(0 - text.indexOf(text_element)));
         };
         decrypted_text += text[text_element_index];
     };
