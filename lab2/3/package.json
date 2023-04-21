@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "iconv-lite": "^0.6.3",
     "Math": "^0.0.1-security",
     "readline-sync": "^1.4.10"
   }
