@@ -7,7 +7,7 @@ const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  let fileContent = fs.readFileSync('text.txt', 'utf-8');
+let fileContent = fs.readFileSync('text.txt', 'utf-8');
 
 let text = readline.question('Enter the text or press 1 to read the text from the file - ');
 
