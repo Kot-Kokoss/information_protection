@@ -14,7 +14,8 @@ if (text == 1) {
 
 console.log('Original message - ', text);
 
-let encrypted_text = '';
+let encrypted_text = '',
+    decrypted_text = '';
 
 for (let i = 0; i != text.length; i++) {
     let char = String(text[i]);
@@ -31,4 +32,20 @@ for (let i = 0; i != text.length; i++) {
     encrypted_text += encrypted_element;
 };
 
-console.log('Encrypted message - ', encrypted_text);
+for (let i = 0; i != encrypted_text.length; i++) {
+    let char = String(encrypted_text[i]);
+    let buffer = iconv.encode(char, 'cp1251');
+    let code = buffer[0];
+    let decrypted_code = code - encrypted_step;
+    
+    if (decrypted_code < 0) {
+        decrypted_code = 255 + decrypted_code;
+    };
+
+    let bytes = new Uint8Array([decrypted_code]);
+    let decrypted_element = iconv.decode(Buffer.from(bytes), 'cp1251');
+    decrypted_text += decrypted_element;
+};
+
+console.log('Encrypted message -', encrypted_text);
+console.log('Decrypted message -', decrypted_text);
