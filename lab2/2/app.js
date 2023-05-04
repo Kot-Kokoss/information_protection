@@ -12,6 +12,7 @@ if (text == 1) {
     text = fileContent;
 };
 
+
 console.log('Original message - ', text)
 
 if (text.length > encrypted_key.length) {
@@ -46,4 +47,25 @@ let encrypted_text = '';
         encrypted_text += encrypted_element;
     };
 
-    console.log('Encrypted message - ', encrypted_text);
+let decrypted_text = '';
+    
+    for (let i = 0; i != text.length; i++) {
+        let char_encrypted_text = String(encrypted_text[i]),
+            char_key = String(encrypted_key[i]);
+        let buffer_encrypted_text = iconv.encode(char_encrypted_text, 'cp1251'),
+            buffer_key = iconv.encode(char_key, 'cp1251');
+        let code_encrypted_text = buffer_encrypted_text[0],
+            code_key = buffer_key[0];
+        let decrypted_code = code_encrypted_text - code_key;
+        
+        if (decrypted_code < 0) {
+            decrypted_code = 256 + decrypted_code;
+        };
+
+        let bytes = new Uint8Array([decrypted_code]);
+        let decrypted_element = iconv.decode(Buffer.from(bytes), 'cp1251');
+        decrypted_text += decrypted_element;
+};
+
+console.log('Encrypted message -', encrypted_text);
+console.log('Decrypted message -', decrypted_text);

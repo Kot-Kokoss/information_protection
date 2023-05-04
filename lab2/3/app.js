@@ -51,3 +51,25 @@ let encrypted_text = '';
     };
 
 console.log('Encrypted message = ', encrypted_text);
+
+let decrypted_text = '';
+
+    for (let i = 0; i != text.length; i++) {
+        let char_decrypted_text = String(encrypted_text[i]),
+            char_password = String(password[i]);
+        let buffer_decrypted_text = iconv.encode(char_decrypted_text, 'cp1251'),
+            buffer_password = iconv.encode(char_password, 'cp1251');
+        let code_decrypted_text = buffer_decrypted_text[0],
+            code_password = buffer_password[0];
+        let decrypted_code = code_decrypted_text - code_password;
+        
+        if (decrypted_code < 0) {
+            decrypted_code = 256 + decrypted_code;
+        };
+
+        let bytes = new Uint8Array([decrypted_code]);
+        let decrypted_element = iconv.decode(Buffer.from(bytes), 'cp1251');
+        decrypted_text += decrypted_element;
+    };
+
+console.log('Decrypted message = ', decrypted_text);
