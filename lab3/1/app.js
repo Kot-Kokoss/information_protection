@@ -3,25 +3,65 @@
 const readline = require('readline-sync');
 const fs = require('fs');
 const iconv = require('iconv-lite');
-const id_list = new Map();
 
 let text = readline.question('Enter the text - '),
-    number_list = '';
+    block_len = readline.question('Enter block length - '),
+    block_mask = readline.question('Enter block mask - '),
+    starting_text_lenght = text.length;
 
-for (let i = 1; i != text.length + 1; i++) {
-    number_list += String(i)
+if (Math.floor(text.length / block_len) < text.length / block_len) {
+    let need_characters = (Math.floor(text.length / block_len) + 1) * block_len;
+    for (let i = 0; text.length != need_characters; i++) {
+        text += text[i];
+    };
 };
 
-for (let i = 0; i != text.length; i++) {
-    let new_number = readline.question('Select a new number for the symbol - ' + text[i] + ' from the remaining numbers - ' + number_list + ' = ');
-    id_list.set(new_number, text[i]);
-    number_list = number_list.replace(new_number, "");
+let blocks = [],
+    encrypted_text = '';
+    
+for (let i = 0; i < text.length + 1; i ++) {
+    blocks.push(text.slice(0, block_len));
+    text = text.slice(block_len);
 };
 
-console.log(id_list);
-let encrypted_text = '';
-for (let i = 1; i != text.length + 1; i++) {
-    encrypted_text = encrypted_text + id_list.get(String(i));
+for (let i = 0; i < blocks.length; i ++) {
+    const encrypted_block_id = new Map();
+    let block = blocks[i],
+        encrypted_block = '';
+    
+    for (let i = 0; i < block_len; i ++) {
+        encrypted_block_id.set(block_mask[i], block[i])
+    };
+    
+    for (let i = 0; i < block_len; i ++) {
+        encrypted_block += encrypted_block_id.get(String(i + 1));
+    };
+    
+    encrypted_text += encrypted_block; 
 };
 
-console.log('Encrypted text - ' + encrypted_text);
+console.log('Encrypted message - ', encrypted_text.slice(0, starting_text_lenght));
+
+let encrypted_blocks = [];
+
+for (let i = 0; i < encrypted_text.length + 1; i ++) {
+    encrypted_blocks.push(encrypted_text.slice(0, block_len));
+    encrypted_text = encrypted_text.slice(block_len);
+};
+
+let decrypted_text = '';
+
+for (let i = 0; i < blocks.length; i ++) {
+    const decrypted_block_id = new Map();
+    let block = encrypted_blocks[i],
+        decrypted_block = '';
+    
+    for (let i = 0; i < block_len; i ++) {
+        let decrypted_place = block[block_mask[i] - 1];
+        decrypted_block += decrypted_place;
+    };
+        
+    decrypted_text += decrypted_block; 
+};
+
+console.log('Decrypted message - ', decrypted_text.slice(0, starting_text_lenght));
