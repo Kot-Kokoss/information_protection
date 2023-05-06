@@ -5,22 +5,53 @@ const fs = require('fs');
 const iconv = require('iconv-lite');
 const id_list = new Map();
 
-let message = "This is a secret message"; // Заданная строка текста
+let matrix_size = readline.question('Enter matrix size X*X, x - '),
+    text = readline.question('Enter the text - '),
+    matrix = [],
+    matrix_mask = [[1,0,0,1,1,0],
+                   [0,1,0,0,0,0],
+                   [0,0,1,0,1,0],
+                   [0,0,0,0,0,1],
+                   [1,0,1,0,0,0],
+                   [0,0,0,1,0,0]];
+text = 'thequickbrownfoxjumpsoverthelazydogs';
+if (Math.floor(text.length / matrix_size) < text.length / matrix_size) {
+    let need_characters = (Math.floor(text.length / matrix_size) + 1) * matrix_size;
+    for (let i = 0; text.length != need_characters; i++) {
+        text += text[i];
+    };
+};
 
-function rotate(matrix) { 
-    let size = matrix.length;
-     let rotated = [];
-      for (let i = 0; i < size; i++) {
-         rotated.push([]);
-         for (let j = 0; j < size; j++) {
-             rotated[i][j] = matrix[size - j - 1][i];
-             }
-            } return rotated; 
-            
+for (let i = 1; i != 4; i ++) {
+
+    // for (let i = 0; i < matrix_size; i ++) {
+    //     let matrix_string = [];
+    //     for (let j = 0; j < matrix_size; j ++) {
+    //         if (matrix_mask[i][j] == 1) {
+    //             matrix_string.push(text[0]);
+    //             text = text.slice(1);
+    //         } else {
+    //             matrix_string.push(0);
+    //         }
+    //     }
+    
+    //     matrix.push(matrix_string);
+    // }
+    console.log(matrix_mask);
+
+    let new_matrix_mask = matrix_mask;
+
+    for (let i = 0; i < matrix_size; i ++) {
+        for (let j = 0; j < matrix_size; j ++) {
+            new_matrix_mask[j][matrix.size - 1 - i] = matrix_mask[i][j];
         }
+    }
+    
+    // console.log(matrix);
+}
 
-function generateGrid(size, rotations) { let grid = []; for (let i = 0; i < size; i++) { grid.push([]); for (let j = 0; j < size; j++) { grid[i][j] = 0; } } let currentRotation = 0; for (let i = 0; i < size; i++) { for (let j = 0; j < size; j++) { if (grid[i][j] === 0) { grid[i][j] = 1; grid[size - j - 1][i] = 1; grid[size - i - 1][size - j - 1] = 1; grid[j][size - i - 1] = 1; } if (currentRotation < rotations.length && rotations[currentRotation] === i * size + j) { grid[i][j] = '*'; currentRotation++; } } } return grid; }
+// let matrix_string = [];
+// for (let i = 0; i < matrix_size; i ++) {
+//     matrix_string.push(0);
+// }
 
-function encrypt(message, size, rotations) { let grid = generateGrid(size, rotations); let encrypted = ""; let messageIndex = 0; for (let i = 0; i < size; i++) { for (let j = 0; j < size; j++) { if (grid[i][j] === 1) { if (messageIndex >= message.length) { encrypted += " "; } else { encrypted += message[messageIndex]; messageIndex++; } } else if (grid[i][j] === '*') { grid[i][j] = rotate([[grid[i - 1][j], grid[i][j - 1]], [grid[i + 1][j], grid[i][j + 1]]]); } } } return encrypted; }
-
-console.log(encrypt(message, 6, [5, 10, 12])); // Шифрованный текст
