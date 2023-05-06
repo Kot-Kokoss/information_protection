@@ -3,8 +3,6 @@
 const readline = require('readline-sync');
 const fs = require('fs');
 const iconv = require('iconv-lite');
-const { reverse } = require('dns');
-const id_list = new Map();
 
 let matrix_size = readline.question('Enter matrix size X*X, x - '),
     text = readline.question('Enter the text - '),
