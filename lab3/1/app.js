@@ -52,7 +52,6 @@ for (let i = 0; i < encrypted_text.length + 1; i ++) {
 let decrypted_text = '';
 
 for (let i = 0; i < blocks.length; i ++) {
-    const decrypted_block_id = new Map();
     let block = encrypted_blocks[i],
         decrypted_block = '';
     
